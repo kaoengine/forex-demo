@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from flask import jsonify
+from flask import jsonify, make_response
 
 
 app = Flask(__name__)
@@ -47,9 +47,13 @@ def forex():
               'fill': 'false',
             },
           ]}
-    response = jsonify(data)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+
+    resp = make_response(jsonify(data), 200)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
+
+
+  
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
