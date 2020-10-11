@@ -4,7 +4,6 @@ from flask import jsonify
 
 
 app = Flask(__name__)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route("/")
 def main():
