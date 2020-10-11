@@ -16,7 +16,7 @@ def hello():
 
 @app.route('/forex')
 def forex():
-    data = {'name': 'Alice', 'datasets': [
+    data = { 'datasets': [
             {
               'data': [86, 114, 106, 106, 107, 111, 133, 221, 783, 2478],
               'label': "Africa",
@@ -48,7 +48,9 @@ def forex():
               'fill': 'false',
             },
           ]}
-    return jsonify(data)
+    response = jsonify(data)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
