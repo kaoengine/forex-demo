@@ -1,0 +1,98 @@
+defaults: &defaults
+  buildpacks:
+    - python_buildpack
+  instances: 1
+  memory: 512M
+  disk_quota: 500MB
+  services:
+    - notify-psql-((stg))
+    - notify-redis-((stg))
+    - notify-shared
+    - notify-api
+    - notify-celery
+    - aws
+    - sap
+    - sap-covid
+    - telstra
+    - twilio
+    - smtp
+  env: &defaults_env
+    RUNNER: "./vcapenvwrapper --root notify-shared --root notify-api --root notify-celery --root aws --root sap --root sap-covid --root telstra --root twilio --root smtp"
+    FLASK_APP: application.py
+    NOTIFY_ENVIRONMENT: production
+    ADMIN_BASE_URL: https://notify-((stg)).apps.y.cld.gov.au
+    API_HOST_NAME: https://notify-api-((stg)).apps.y.cld.gov.au
+    API_SENTRY_ENV: dev
+    CELERY_SENTRY_ENV: dev
+    CREATE_ADMIN_USER: true
+
+applications:
+  - name: notify-api-((stg))
+    <<: *defaults
+    command: make run-production
+    env:
+      <<: *defaults_env
+      CF_APP_NAME: notify-api-((stg))
+  - name: notify-celery-worker-default-((stg))
+    <<: *defaults
+    memory: 1G
+    health-check-type: process
+    no-route: true
+    command: make run-celery-worker-default
+    env:
+      <<: *defaults_env
+      CF_APP_NAME: notify-celery-worker-default-((stg))
+  - name: notify-celery-worker-priority-((stg))
+    <<: *defaults
+    memory: 750M
+    health-check-type: process
+    no-route: true
+    command: make run-celery-worker-priority
+    env:
+      <<: *defaults_env
+      CF_APP_NAME: notify-celery-worker-priority-((stg))
+  - name: notify-celery-worker-sender-((stg))
+    <<: *defaults
+    memory: 1G
+    health-check-type: process
+    no-route: true
+    command: make run-celery-worker-sender
+    env:
+      <<: *defaults_env
+      CF_APP_NAME: notify-celery-worker-sender-((stg))
+  - name: notify-celery-worker-callbacks-((stg))
+    <<: *defaults
+    memory: 750M
+    health-check-type: process
+    no-route: true
+    command: make run-celery-worker-callbacks
+    env:
+      <<: *defaults_env
+      CF_APP_NAME: notify-celery-worker-callbacks-((stg))
+  - name: notify-celery-worker-retrys-((stg))
+    <<: *defaults
+    memory: 750M
+    health-check-type: process
+    no-route: true
+    command: make run-celery-worker-retrys
+    env:
+      <<: *defaults_env
+      CF_APP_NAME: notify-celery-worker-retrys-((stg))
+  - name: notify-celery-worker-internal-((stg))
+    <<: *defaults
+    memory: 750M
+    health-check-type: process
+    no-route: true
+    command: make run-celery-worker-internal
+    env:
+      <<: *defaults_env
+      CF_APP_NAME: notify-celery-worker-internal-((stg))
+  - name: notify-celery-beat-((stg))
+    <<: *defaults
+    memory: 256M
+    health-check-type: process
+    no-route: true
+    command: make run-celery-beat
+    env:
+      <<: *defaults_env
+      CF_APP_NAME: notify-celery-beat-((stg))

@@ -1,40 +1,62 @@
 [[source]]
-url = "https://pypi.org/simple"
+url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
 [packages]
-bleach = "==3.1.4"
-boto3 = "==1.10.35"
-botocore = "==1.13.35"
-itsdangerous = "==1.1.0"
-flask = "==1.1.1"
-flask-redis = "==0.4.0"
-jinja2 = "==2.10.3"
-mistune = "==0.8.4"
+cffi = "==1.11.5"
+celery = {extras = ["redis"],version = "==4.4.0"}
+docopt = "==0.6.2"
+Flask-Bcrypt = "==0.7.1"
+flask-marshmallow = "==0.8.0"
+Flask-Migrate = "==2.1.1"
+Flask-SQLAlchemy = "==2.3.2"
+Flask = "==1.1.1"
+click-datetime = "==0.2"
+eventlet = "==0.22.1"
+gunicorn = "==19.7.1"
+iso8601 = "==0.1.12"
+jsonschema = "==3.0.1"
+marshmallow-sqlalchemy = "==0.13.2"
+marshmallow = "==2.16.0"
 monotonic = "==1.5"
-orderedset = "==2.0.1"
-phonenumbers = "==8.11.0"
-pypdf2 = "==1.26.0"
-python-json-logger = "==0.1.11"
-pytz = "==2019.3"
-pyyaml = "==5.2"
-redis = "==3.3.11"
-requests = "==2.22.0"
-smartypants = "==2.0.1"
-statsd = "==3.3.0"
+psycopg2-binary = "==2.7.4"
+PyJWT = "==1.6.1"
+SQLAlchemy = "==1.3.15"
+notifications-python-client = "==4.8.1"
+notifications-utils = {path = "./../utils",editable = true}
+Telstra_Messaging = {git = "https://github.com/Telstra/MessagingAPI-SDK-python.git",ref = "1.0.6.1"}
+twilio = "~=6.16"
+saplivelink365 = {git = "https://github.com/govau/sap-live-link-365-client-python.git",ref = "v0.0.3"}
+boto3 = "==1.10.35"
+sentry-sdk = {extras = ["flask"]}
+itsdangerous = "==1.1.0"
+validatesns = "*"
+authlib = "==0.13"
+# cryptography is not directly imported by api, but fails to vendor correctly in
+# CI if we pin it to 2.8. The error is:
+# "Could not find a version that satisfies the requirement cryptography==2.8"
+# For now we pin it to some commit in master that seems to work.
+cryptography = {git = "https://github.com/pyca/cryptography.git",ref = "9dc710e65ae08de8ad510a985ad1258aa76a26b3"}
+cachelib = "*"
 
 [dev-packages]
 bandit = "==1.5.1"
+coveralls = "==1.3.0"
 flake8 = "==3.7.9"
 freezegun = "==0.3.10"
-notifications-utils = {editable = true,path = "."}
-pipenv-setup = "*"
+moto = "==1.3.1"
+pip = "==9.0.3"
 pytest = "==3.6.4"
 pytest-cov = "==2.6.0"
+pytest-env = "==0.6.2"
 pytest-mock = "==1.10.0"
 pytest-xdist = "==1.22.2"
 requests-mock = "==1.4.0"
+rfc3987 = "==1.3.7"
+strict-rfc3339 = "==0.7"
+pyyaml = "==5.2"
+urllib3-mock = "==0.3.3"
 
 [pipenv]
 allow_prereleases = true
