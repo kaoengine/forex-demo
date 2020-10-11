@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-
-class StockChart extends Component {
+import { Line } from "react-chartjs-2";
+export default class StockChart extends Component {
   constructor() {
     super();
     this.state = { data: [] };
@@ -59,7 +59,7 @@ class StockChart extends Component {
 
   async componentDidMount() {
     try {
-      const response = await fetch(`http://127.0.0.1:6011/`);
+      const response = await fetch(`http://127.0.0.1:6011/how are you`);
       const json = await response.json();
       console.log(json);
       // this.setState({ data: json });
