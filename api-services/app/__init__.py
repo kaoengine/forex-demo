@@ -48,6 +48,7 @@ def forex():
             },
           ]}
 
+    # Note: for Khanh make repsonse is a wrapper
     resp = make_response(jsonify(data), 200)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
