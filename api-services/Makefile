@@ -59,7 +59,7 @@ install: version-file ## Setup virtualenv and install python dependencies
 	$(PIPENV) install
 
 install-dev: ## Setup everything in dev mode for testing
-	$(PIPENV) install --dev
+	$(PIPENV) pipenv lock --pre --clear && $(PIPENV) install --dev 
 
 setup-db: version-file ## Run database migrations
 	$(RUNNER) flask db upgrade
