@@ -1,9 +1,48 @@
+# Python Import:
 import os
+import joblib
+import numpy as np
 from flask import Flask
 from flask import jsonify, make_response
+# Pytorch Import:
+import torch
+from forex-demo.machine-learn import forex
 
-
+# Define Flask app:
 app = Flask(__name__)
+# Define and load pre-trained models:
+fx_encoder = forex.Encoder(source_size=4, hidden_size=256, num_layers=1, dropout=0.0, bidirectional=False)
+fx_decoder = forex.Decoder(target_size=4, hidden_size=256, num_layers=1, dropout=0.0)
+prepath = "../../machine-learn/checkpoint/"
+fx_encoder.load_state_dict(torch.load(prepath + "fx_encoder"), map_location="cpu")
+fx_decoder.load_state_dict(torch.load(prepath + "fx_decoder"), map_location="cpu") 
+scaler = joblib.load(prepath + "scaler.save")
+# Toggle evaluation mode:
+fx_encoder.eval()
+fx_decoder.eval()
+
+@app.route("/predict")
+def predict(x):
+    # Convert input to python object:
+    
+    # Scale input with scaler:
+    x = scaler.transform(x)
+    # Convert python object to pytorch tensor:
+    x = torch.FloatTensor(x).unsqueeze(0)
+    # Predict:
+    with torch.no_grad():
+        _, h = fx_encoder(x)
+        o, _ = fx_decoder(h, 32, None, False)
+    # Convert pytorch prediction back to python object:
+    o = o.squeeze().numpy()
+    o = scaler.inverse_transform(o)
+    o = {
+        "HIGH": list(o[:, 0]), 
+        "LOW": list(o[:, 1]), 
+        "OPEN": list(o[:, 2]),
+        "CLOSE": list(o[:, 3])
+    }
+    return jsonify(o)
 
 @app.route("/")
 def main():
