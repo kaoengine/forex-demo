@@ -3,7 +3,7 @@ import os
 import joblib
 import numpy as np
 from flask import Flask
-from flask import jsonify
+from flask import jsonify, make_response
 # Pytorch Import:
 import torch
 from forex-demo.machine-learn import forex
@@ -86,9 +86,20 @@ def forex():
               'fill': 'false',
             },
           ]}
-    response = jsonify(data)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+
+    # Query data from DB return back the set of Step with &step is argument
+    # stepData = Db.query();
+
+    # Invoke the prediction data with argument from step Data
+
+    
+    # Note: for Khanh make repsonse is a wrapper
+    resp = make_response(jsonify(data), 200)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
+
+
+  
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
