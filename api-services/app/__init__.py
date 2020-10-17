@@ -48,6 +48,12 @@ def forex():
             },
           ]}
 
+    # Query data from DB return back the set of Step with &step is argument
+    # stepData = Db.query();
+
+    # Invoke the prediction data with argument from step Data
+
+    
     # Note: for Khanh make repsonse is a wrapper
     resp = make_response(jsonify(data), 200)
     resp.headers['Access-Control-Allow-Origin'] = '*'
