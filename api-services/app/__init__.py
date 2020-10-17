@@ -6,13 +6,13 @@ from flask import Flask
 from flask import jsonify, make_response
 # Pytorch Import:
 import torch
-from forex-demo.machine-learn import forex
+from machineLearn import Encoder, Decoder
 
 # Define Flask app:
 app = Flask(__name__)
 # Define and load pre-trained models:
-fx_encoder = forex.Encoder(source_size=4, hidden_size=256, num_layers=1, dropout=0.0, bidirectional=False)
-fx_decoder = forex.Decoder(target_size=4, hidden_size=256, num_layers=1, dropout=0.0)
+fx_encoder = Encoder(source_size=4, hidden_size=256, num_layers=1, dropout=0.0, bidirectional=False)
+fx_decoder = Decoder(target_size=4, hidden_size=256, num_layers=1, dropout=0.0)
 prepath = "../../machine-learn/checkpoint/"
 fx_encoder.load_state_dict(torch.load(prepath + "fx_encoder"), map_location="cpu")
 fx_decoder.load_state_dict(torch.load(prepath + "fx_decoder"), map_location="cpu") 
@@ -21,8 +21,6 @@ scaler = joblib.load(prepath + "scaler.save")
 fx_encoder.eval()
 fx_decoder.eval()
 
-@app.route("/predict")
-# x: type is 15 step of DATA
 def predict(x):
     # Convert input to python object:
     
@@ -43,7 +41,7 @@ def predict(x):
         "OPEN": list(o[:, 2]),
         "CLOSE": list(o[:, 3])
     }
-    return jsonify(o)
+return jsonify(o)
 
 @app.route("/")
 def main():
@@ -92,10 +90,10 @@ def forex():
     # stepData = Db.query();
 
     # Invoke the prediction data with argument from step Data
-
+    afterPredictData = predict(data)
     
     # Note: for Khanh make repsonse is a wrapper
-    resp = make_response(jsonify(data), 200)
+    resp = make_response(jsonify(afterPredictData), 200)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
 
