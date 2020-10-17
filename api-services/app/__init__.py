@@ -22,6 +22,7 @@ fx_encoder.eval()
 fx_decoder.eval()
 
 @app.route("/predict")
+# x: type is 15 step of DATA
 def predict(x):
     # Convert input to python object:
     
