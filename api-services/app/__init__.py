@@ -17,9 +17,9 @@ def hello():
 def forex():
     data = { 'datasets': [
             {
-              'data': [86, 114, 106, 106, 107, 111, 133, 221, 783, 2478],
+              'data': [86, 114,],
               'label': "Africa",
-              'borderColor': "#3e95cd",
+              'borderColors': ["#3e95cd", "#8e5ea2", ],
               'fill': 'false',
             },
             {
