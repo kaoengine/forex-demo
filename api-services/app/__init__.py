@@ -56,28 +56,28 @@ def castDataToFe(data,dataWithDateTime):
         {
             'data': data['HIGH'],
             
-            'label': "Africa",
+            'label': "HIGH",
             'borderColor': "#3e95cd",
             'fill': 'false',
         },
         {
             'data': data['LOW'],
             
-            'label': "Asia",
+            'label': "LOW",
             'borderColor': "#8e5ea2",
             'fill': 'false',
         },
         {
             'data': data['OPEN'],
             
-            'label': "Europe",
+            'label': "OPEN",
             'borderColor': "#3cba9f",
             'fill': 'false',
         },
         {
             'data': data['CLOSE'],
             
-            'label': "Latin America",
+            'label': "CLOSE",
             'borderColor': "#e8c3b9",
             'fill': 'false',
         },
