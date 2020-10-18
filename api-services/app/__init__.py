@@ -10,7 +10,20 @@ import pathlib
 
 # Define Flask app:
 app = Flask(__name__)
+# Define and load pre-trained models:
+fx_encoder = forex.Encoder(source_size=4, hidden_size=256, num_layers=1, dropout=0.0, bidirectional=False)
+fx_decoder = forex.Decoder(target_size=4, hidden_size=256, num_layers=1, dropout=0.0)
 
+encoder_path = pathlib.Path('./machineLearnPackage/checkpoint/fx_encoder.pth')
+decoder_path = pathlib.Path('./machineLearnPackage/checkpoint/fx_decoder.pth')
+scaler_path = pathlib.Path('./machineLearnPackage/checkpoint/scaler.save')
+
+fx_encoder.load_state_dict(torch.load(encoder_path, map_location="cpu"))
+fx_decoder.load_state_dict(torch.load(decoder_path, map_location="cpu"))
+scaler = joblib.load(scaler_path)
+# Toggle evaluation mode:
+fx_encoder.eval()
+fx_decoder.eval()
 
 def predict(x):
     # Convert input to python object:
@@ -103,20 +116,7 @@ def forex():
 
 
 if __name__ == "__main__":
-    # Define and load pre-trained models:
-    fx_encoder = forex.Encoder(source_size=4, hidden_size=256, num_layers=1, dropout=0.0, bidirectional=False)
-    fx_decoder = forex.Decoder(target_size=4, hidden_size=256, num_layers=1, dropout=0.0)
 
-    encoder_path = pathlib.Path('./machineLearnPackage/checkpoint/fx_encoder.pth')
-    decoder_path = pathlib.Path('./machineLearnPackage/checkpoint/fx_decoder.pth')
-    scaler_path = pathlib.Path('./machineLearnPackage/checkpoint/scaler.save')
-
-    fx_encoder.load_state_dict(torch.load(encoder_path, map_location="cpu"))
-    fx_decoder.load_state_dict(torch.load(decoder_path, map_location="cpu"))
-    scaler = joblib.load(scaler_path)
-    # Toggle evaluation mode:
-    fx_encoder.eval()
-    fx_decoder.eval()
 
     # Run Flask app:
     app.run(host="0.0.0.0", port=8080)
