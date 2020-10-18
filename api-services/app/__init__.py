@@ -50,31 +50,33 @@ def predict(x):
 
 
 def castDataToFe(data,dataWithDateTime):
-    dataModel = {'datasets': [
+    dataModel = {
+        'labels': dataWithDateTime['DATE_TIME'],
+        'datasets': [
         {
             'data': data['HIGH'],
-            'date': dataWithDateTime['DATE_TIME'],
+            
             'label': "Africa",
             'borderColor': "#3e95cd",
             'fill': 'false',
         },
         {
             'data': data['LOW'],
-            'date': dataWithDateTime['DATE_TIME'],
+            
             'label': "Asia",
             'borderColor': "#8e5ea2",
             'fill': 'false',
         },
         {
             'data': data['OPEN'],
-            'date': dataWithDateTime['DATE_TIME'],
+            
             'label': "Europe",
             'borderColor': "#3cba9f",
             'fill': 'false',
         },
         {
             'data': data['CLOSE'],
-            'date': dataWithDateTime['DATE_TIME'],
+            
             'label': "Latin America",
             'borderColor': "#e8c3b9",
             'fill': 'false',
