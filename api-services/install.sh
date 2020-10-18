@@ -7,9 +7,45 @@ fi
 
 if ! [ -x "$(command -v flask)" ]; then
         echo 'Warning: flask is not installed.' >&2
-        pip3 install flask
+        # pip3 install flask
   else
         echo 'Error: flask is installed.' >&2
+fi
+
+
+if ! [ -x "$(command -v joblib)" ]; then
+        echo 'Warning: joblib is not installed.' >&2
+        # pip3 install joblib
+    else
+        echo 'Error: joblib is installed.' >&2
+fi
+
+if ! [ -x "$(command -v torch)" ]; then
+        echo 'Warning: torch is not installed.' >&2
+        # pip3 install torch
+    else
+        echo 'Error: torch is installed.' >&2
+fi
+
+if ! [ -x "$(command -v numpy)" ]; then
+        echo 'Warning: numpy is not installed.' >&2
+        # pip3 install numpy
+    else
+        echo 'Error: numpy is installed.' >&2
+fi
+
+if ! [ -x "$(command -v scipy)" ]; then
+        echo 'Warning: scipy is not installed.' >&2
+        # pip3 install scipy
+    else
+        echo 'Error: scipy is installed.' >&2
+fi
+
+if ! [ -x "$(command -v sklearn)" ]; then
+        echo 'Warning: sklearn is not installed.' >&2
+        pip3 install sklearn
+    else
+        echo 'Error: sklearn is installed.' >&2
 fi
 
 # postgresql

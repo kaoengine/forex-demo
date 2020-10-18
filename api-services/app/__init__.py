@@ -4,26 +4,33 @@ import joblib
 import numpy as np
 from flask import Flask
 from flask import jsonify, make_response
-# Pytorch Import:
 import torch
-from machineLearn import Encoder, Decoder
+from machineLearnPackage import forex,checkpoint
+import pathlib 
 
 # Define Flask app:
 app = Flask(__name__)
-# Define and load pre-trained models:
-fx_encoder = Encoder(source_size=4, hidden_size=256, num_layers=1, dropout=0.0, bidirectional=False)
-fx_decoder = Decoder(target_size=4, hidden_size=256, num_layers=1, dropout=0.0)
-prepath = "../../machine-learn/checkpoint/"
-fx_encoder.load_state_dict(torch.load(prepath + "fx_encoder"), map_location="cpu")
-fx_decoder.load_state_dict(torch.load(prepath + "fx_decoder"), map_location="cpu") 
-scaler = joblib.load(prepath + "scaler.save")
-# Toggle evaluation mode:
-fx_encoder.eval()
-fx_decoder.eval()
+
+def service_init():
+  # Define and load pre-trained models:
+  fx_encoder = forex.Encoder(source_size=4, hidden_size=256, num_layers=1, dropout=0.0, bidirectional=False)
+  fx_decoder = forex.Decoder(target_size=4, hidden_size=256, num_layers=1, dropout=0.0)
+
+  encoder_path = pathlib.Path('./machineLearnPackage/checkpoint/fx_encoder.pth')
+  decoder_path = pathlib.Path('./machineLearnPackage/checkpoint/fx_decoder.pth')
+  scaler_path = pathlib.Path('./machineLearnPackage/checkpoint/scaler.save')
+
+  fx_encoder.load_state_dict(torch.load(encoder_path), map_location="cpu")
+  fx_decoder.load_state_dict(torch.load(decoder_path), map_location="cpu") 
+  scaler = joblib.load(scaler_path)
+  # Toggle evaluation mode:
+  fx_encoder.eval()
+  fx_decoder.eval()
+  return scaler;
 
 def predict(x):
     # Convert input to python object:
-    
+    scaler = service_init()
     # Scale input with scaler:
     x = scaler.transform(x)
     # Convert python object to pytorch tensor:
@@ -41,7 +48,7 @@ def predict(x):
         "OPEN": list(o[:, 2]),
         "CLOSE": list(o[:, 3])
     }
-return jsonify(o)
+    return jsonify(o)
 
 @app.route("/")
 def main():
@@ -93,7 +100,7 @@ def forex():
     afterPredictData = predict(data)
     
     # Note: for Khanh make repsonse is a wrapper
-    resp = make_response(jsonify(afterPredictData), 200)
+    resp = make_response(jsonify(data), 200)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
 
