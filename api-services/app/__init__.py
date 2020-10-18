@@ -40,10 +40,10 @@ def predict(x):
     o = o.squeeze().numpy()
     o = scaler.inverse_transform(o)
     o = {
-        "HIGH": list(o[:, 0]),
-        "LOW": list(o[:, 1]),
-        "OPEN": list(o[:, 2]),
-        "CLOSE": list(o[:, 3])
+        "HIGH":  [float(i) for i in list(o[:, 0])],
+        "LOW":   [float(i) for i in list(o[:, 1])],
+        "OPEN":  [float(i) for i in list(o[:, 2])],
+        "CLOSE": [float(i) for i in list(o[:, 3])]
     }
     return o
 
@@ -104,9 +104,10 @@ def forex():
 
     # Invoke the prediction data with argument from step Data
     afterPredictData = predict(data)
+    print(afterPredictData)
 
     # Note: for Khanh make repsonse is a wrapper
-    resp = make_response(jsonify(data), 200)
+    resp = make_response(jsonify(afterPredictData), 200)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
 
