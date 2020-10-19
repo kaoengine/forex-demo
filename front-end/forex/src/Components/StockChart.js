@@ -23,11 +23,13 @@ export default class StockChart extends Component {
           title: {
             display: true,
             text: "World population per region (in millions)",
+            fontSize: 25
           },
           legend: {
             display: true,
             position: "bottom",
           },
+    
         }}
       />
     );

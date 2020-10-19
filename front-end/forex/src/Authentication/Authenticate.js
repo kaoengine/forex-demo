@@ -1,7 +1,6 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import Register from "./Register";
 import { Redirect } from 'react-router-dom'
-
 class Authenticate extends React.Component{
     constructor(props){
         super(props);
@@ -11,18 +10,20 @@ class Authenticate extends React.Component{
     addUser = (name,password,email,gender,isRegister) => {
         this.setState({
             Users: [...this.state.Users,
-                {   username: name,
-                password: password, 
-                email: email,
-                gender:gender,
-                isRegister:isRegister
+                {
+                    username: name,
+                    password: password, 
+                    email: email,
+                    gender:gender,
+                    isRegister:isRegister
                 }
             ],
         })
     }
 
     saveLocalStorageUser = () => {
-        localStorage.setItem("users", JSON.stringify(this.state.Users));
+        const users = this.state.Users;
+        if(users.length > 0) localStorage.setItem("users", JSON.stringify(this.state.Users));
     }
 
     getUser = () => {
@@ -35,12 +36,12 @@ class Authenticate extends React.Component{
     }
 
     render(){
-        const user = localStorage.getItem('users');
-        if(user) return <Redirect to="/protected"/>
+        const {Users} = this.state
+        if(Users.length !== 0) return <Redirect to="/protected"/>
         return(
-            <Fragment>
+            <>
                 <Register addUser={this.addUser}/>
-            </Fragment>
+            </>
         )
     }
 }

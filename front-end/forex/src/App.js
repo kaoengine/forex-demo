@@ -7,13 +7,13 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
 const App = () => {
   return (
-    <Router>
-      <Switch>
-        <Route path="/" exact component={Authenticate}></Route>
-        <Route path="/protected" component={Protected}></Route>
-        <Route path="/login" component={Login}></Route>
-        <Route path="/chart" component={StockChart}></Route>
-      </Switch>
+      <Router>
+        <Switch>
+          <Route path="/" exact component={Authenticate}></Route>
+          <Route path="/protected" component={Protected}></Route>
+          <Route path="/login" component={Login}></Route>
+          <Route path="/chart" component={StockChart}></Route>
+        </Switch>
     </Router>
   );
 }
